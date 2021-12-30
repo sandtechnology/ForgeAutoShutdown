@@ -16,7 +16,7 @@ to restart after shutdown
 
 # Installation
 
-1. Download the [latest release JAR](https://github.com/Gamealition/ForgeAutoShutdown/releases)
+1. Download the [latest release JAR](https://github.com/sandtechnology/ForgeAutoShutdown/releases)
 or clone this repository & build a JAR file
 2. Place the JAR file in the `mods/` directory of the server
 3. Run/restart the server
