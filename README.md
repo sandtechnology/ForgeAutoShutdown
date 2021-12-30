@@ -10,7 +10,7 @@ admin intervention
 # Requirements
 
 * Minecraft Forge server for...
-  * 1.10.2, at least [12.18.3.2511](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.10.2.html)
+  * 1.12.2, at least [14.23.5.2768](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.12.2.html)
 * A [wrapper script](https://github.com/Gamealition/Minecraft-Scripts), if server intends
 to restart after shutdown
 
