@@ -13,9 +13,6 @@ import org.apache.logging.log4j.Logger;
     modid   = ForgeAutoShutdown.MODID,
     name    = ForgeAutoShutdown.MODID,
     version = ForgeAutoShutdown.VERSION,
-
-    acceptableRemoteVersions = "*",
-    acceptableSaveVersions   = "",
         serverSideOnly = true
 )
 public class ForgeAutoShutdown

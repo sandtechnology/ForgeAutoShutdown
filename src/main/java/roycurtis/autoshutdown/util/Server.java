@@ -2,6 +2,7 @@ package roycurtis.autoshutdown.util;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.util.FakePlayer;
 import org.apache.logging.log4j.Logger;
 import roycurtis.autoshutdown.ForgeAutoShutdown;
@@ -21,10 +22,10 @@ public class Server
     {
         reason = Chat.translate(reason);
 
-        for ( Object value : SERVER.getPlayerList().getPlayerList().toArray() )
+        for ( Object value : SERVER.getPlayerList().getPlayers().toArray() )
         {
             EntityPlayerMP player = (EntityPlayerMP) value;
-            player.connection.kickPlayerFromServer(reason);
+            player.connection.disconnect(new TextComponentString(reason));
         }
 
         LOGGER.debug("Shutdown initiated because: %s", reason);
@@ -34,7 +35,7 @@ public class Server
     /** Checks if any non-fake player is present on the server */
     public static boolean hasRealPlayers()
     {
-        for ( Object value : SERVER.getPlayerList().getPlayerList().toArray() )
+        for ( Object value : SERVER.getPlayerList().getPlayers().toArray() )
             if (value instanceof EntityPlayerMP)
             if ( !(value instanceof FakePlayer) )
                 return true;

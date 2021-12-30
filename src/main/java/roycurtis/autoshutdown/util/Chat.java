@@ -32,7 +32,7 @@ public class Chat
      */
     public static void toAll(MinecraftServer server, String msg, Object... parts)
     {
-        server.getServer().getPlayerList().sendChatMsg( prepareText(msg, parts) );
+        server.getServer().getPlayerList().sendMessage( prepareText(msg, parts) );
     }
 
     /**
@@ -43,7 +43,7 @@ public class Chat
      */
     public static void to(ICommandSender sender, String msg, Object... parts)
     {
-        sender.addChatMessage( prepareText(msg, parts) );
+        sender.sendMessage( prepareText(msg, parts) );
     }
 
     private static ITextComponent prepareText(String msg, Object... parts)

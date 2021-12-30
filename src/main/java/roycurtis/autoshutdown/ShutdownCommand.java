@@ -2,6 +2,8 @@ package roycurtis.autoshutdown;
 
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
@@ -17,8 +19,8 @@ import java.util.*;
  */
 public class ShutdownCommand implements ICommand
 {
-    static final List ALIASES = Collections.singletonList("shutdown");
-    static final List OPTIONS = Arrays.asList("yes", "no");
+    static final List<String> ALIASES = Collections.singletonList("shutdown");
+    static final List<String> OPTIONS = Arrays.asList("yes", "no");
 
     private static ShutdownCommand INSTANCE;
     private static MinecraftServer SERVER;
@@ -44,6 +46,21 @@ public class ShutdownCommand implements ICommand
     }
 
     @Override
+    public String getName() {
+        return "shutdown";
+    }
+
+    @Override
+    public String getUsage(ICommandSender sender) {
+        return "/shutdown <yes|no>";
+    }
+
+    @Override
+    public List<String> getAliases() {
+        return Collections.singletonList("shutdown");
+    }
+
+    @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         if (sender == SERVER)
@@ -61,9 +78,10 @@ public class ShutdownCommand implements ICommand
     }
 
     @Override
-    public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos) {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
         return OPTIONS;
     }
+
 
     private ShutdownCommand() { }
 
@@ -73,13 +91,13 @@ public class ShutdownCommand implements ICommand
             throw new CommandException("FAS.error.novoteinprogress");
 
         Date now        = new Date();
-        long interval   = Config.voteInterval * 60 * 1000;
+        long interval   = (long) Config.voteInterval * 60 * 1000;
         long difference = now.getTime() - lastVote.getTime();
 
         if (difference < interval)
             throw new CommandException("FAS.error.toosoon", (interval - difference) / 1000);
 
-        List players = SERVER.getPlayerList().getPlayerList();
+        List<EntityPlayerMP> players = SERVER.getPlayerList().getPlayers();
 
         if (players.size() < Config.minVoters)
             throw new CommandException("FAS.error.notenoughplayers", Config.minVoters);
@@ -108,7 +126,7 @@ public class ShutdownCommand implements ICommand
 
     private void checkVotes()
     {
-        int players = SERVER.getPlayerList().getPlayerList().size();
+        int players = SERVER.getPlayerList().getPlayers().size();
 
         if (players < Config.minVoters)
         {
@@ -144,24 +162,6 @@ public class ShutdownCommand implements ICommand
         voting   = false;
     }
 
-    // <editor-fold desc="ICommand">
-    @Override
-    public String getCommandName()
-    {
-        return "shutdown";
-    }
-
-    @Override
-    public String getCommandUsage(ICommandSender sender)
-    {
-        return "/shutdown <yes|no>";
-    }
-
-    @Override
-    public List getCommandAliases()
-    {
-        return ALIASES;
-    }
 
     @Override
     public boolean isUsernameIndex(String[] args, int idx)
@@ -171,7 +171,7 @@ public class ShutdownCommand implements ICommand
 
     @Override
     public int compareTo(ICommand o) {
-        return o.getCommandName().compareTo( getCommandName() );
+        return o.getName().compareTo( getName() );
     }
     // </editor-fold>
 }
